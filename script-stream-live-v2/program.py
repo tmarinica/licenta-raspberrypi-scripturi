@@ -23,16 +23,17 @@ rawCapture = PiRGBArray(camera, size=[608, 480])
 print("[INFO] warming up...")
 time.sleep(5)
 
-camera.start_preview()
-
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((TCP_IP, TCP_PORT))
+
+
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
     # grab the raw NumPy array representing the image and initialize
     # the timestamp and occupied/unoccupied text
     frame = f.array
-
+    
+    #cv2.imshow("frame", frame)
     
     encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 20]
 
@@ -40,11 +41,14 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     
     jpg_as_text = base64.b64encode(buffer)
     
-    jpg_as_text = jpg_as_text + '*'
+
+    #jpg_as_text = jpg_as_text + '*'
+    #print(jpg_as_text)
 
     #print ("Sending image...")
 
-    sock.sendall(jpg_as_text)    
+    sock.sendall(jpg_as_text)
+    sock.sendall('*'.encode())
 
     #time.sleep(5)    
 
@@ -54,4 +58,3 @@ sock.close()
 
 # When everything done, release the capture
 cap.release()
-camera.stop_preview()

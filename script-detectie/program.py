@@ -20,7 +20,8 @@ camera.resolution = [640, 480]
 camera.framerate = 16
 rawCapture = PiRGBArray(camera, size=[640, 480])
  
-frontal_face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+frontal_face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
+fullbody_cascade = cv2.CascadeClassifier('haarcascade_fullbody.xml')
 
 # allow the camera to warmup, then initialize the average frame, last
 # uploaded timestamp, and frame motion counter
@@ -39,7 +40,7 @@ betweenSendsTimerDuration = None
 
 print("here")
 
-camera.start_preview()
+
 
 # capture frames from the camera
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
@@ -48,17 +49,15 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     frame = f.array
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray = cv2.equalizeHist(gray)
     
     
 
+
     #print(gray)
     
-    faces_frontal = frontal_face_cascade.detectMultiScale(
-        gray,
-        scaleFactor=1.1,
-        minNeighbors=15,
-        minSize=(30, 30)
-    )
+    faces_frontal = frontal_face_cascade.detectMultiScale(gray)
+    full_bodies = fullbody_cascade.detectMultiScale(gray, 1.5, 1)
 
     
 
@@ -66,7 +65,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
         if not hasStabilityTimerAlreadyStarted:
             stabilityStartTime = time.time()
             hasStabilityTimerAlreadyStarted = True
-	    print("detectez fata")
+            print ("detectez fata")
     else:
         print("not!!!!!!!!!")
         hasStabilityTimerAlreadyStarted = False
@@ -106,11 +105,21 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     for (x,y,w,h) in faces_frontal:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (255,0,0), 2)
 
+    for (x,y,w,h) in full_bodies:
+        cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 2)
+    
+    cv2.imshow("frame", frame)
+
+
+    k = cv2.waitKey(1) & 0xff
+    if k == 27: # press 'ESC' to quit
+        break
+
+
     rawCapture.truncate(0)
     
 
 # When everything done, release the capture
-camera.stop_preview()
 cap.release()
 cv2.destroyAllWindows()
 connection.close()
