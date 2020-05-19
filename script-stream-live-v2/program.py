@@ -35,7 +35,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     
     #cv2.imshow("frame", frame)
     
-    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 20]
+    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 80]
 
     retval, buffer = cv2.imencode('.jpg', frame, encode_param)
     

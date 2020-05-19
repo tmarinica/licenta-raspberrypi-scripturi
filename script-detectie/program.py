@@ -20,8 +20,8 @@ camera.resolution = [640, 480]
 camera.framerate = 16
 rawCapture = PiRGBArray(camera, size=[640, 480])
  
-frontal_face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
-fullbody_cascade = cv2.CascadeClassifier('haarcascade_fullbody.xml')
+frontal_face_cascade = cv2.CascadeClassifier('/home/pi/scripts/script-detectie/haarcascade_frontalface_alt.xml')
+fullbody_cascade = cv2.CascadeClassifier('/home/pi/scripts/script-detectie/haarcascade_fullbody.xml')
 
 # allow the camera to warmup, then initialize the average frame, last
 # uploaded timestamp, and frame motion counter
@@ -47,6 +47,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
     # grab the raw NumPy array representing the image and initialize
     # the timestamp and occupied/unoccupied text
     frame = f.array
+	
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     gray = cv2.equalizeHist(gray)
