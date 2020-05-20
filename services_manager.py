@@ -24,8 +24,8 @@ class ServicesManager:
     camera.framerate = 16
     rawCapture = PiRGBArray(camera, size=[640, 480])
      
-    frontal_face_cascade = cv2.CascadeClassifier('/home/pi/scripts/script-detectie/haarcascade_frontalface_alt.xml')
-    fullbody_cascade = cv2.CascadeClassifier('/home/pi/scripts/script-detectie/haarcascade_fullbody.xml')
+    frontal_face_cascade = cv2.CascadeClassifier('/home/pi/scripts/haarcascade_frontalface_alt.xml')
+    fullbody_cascade = cv2.CascadeClassifier('/home/pi/scripts/haarcascade_fullbody.xml')
 
     hasStabilityTimerAlreadyStarted = False
     stabilityStartTime = None

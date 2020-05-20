@@ -16,17 +16,17 @@ def message_received_callback(ch, method, properties, message):
     print("Received message ", message)
 
     message_dict = json.loads(message)
-    command = message_dict["command"]
+    name = message_dict["name"]
     parameter = message_dict["parameter"]
 
-    print(command)
+    print(name)
     print(parameter)
 
-    if command == "START_LIVE_STREAM_SCRIPT":
+    if name == "START_LIVE_STREAM":
         print("starting live stream...")
         m.startLiveStream = True
     
-    if command == "STOP_LIVE_STREAM_SCRIPT":
+    if name == "STOP_LIVE_STREAM":
         print("stopping live stream...")
         m.startLiveStream = False
 
