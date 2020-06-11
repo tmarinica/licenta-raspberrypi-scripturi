@@ -122,7 +122,7 @@ class ServicesManager:
                     if self.stabilityDuration > 1:
                         print("a trecut 1 sec de stabilitate")
 
-                        if not self.hasBetweenSendsTimeTimerAlreadyStarted or (self.hasBetweenSendsTimeTimerAlreadyStarted and self.betweenSendsTimerDuration >= 5): 
+                        if not self.hasBetweenSendsTimeTimerAlreadyStarted or (self.hasBetweenSendsTimeTimerAlreadyStarted and self.betweenSendsTimerDuration >= 1): 
                             print("trimit poza...")
 
                             retval, buffer = cv2.imencode('.jpg', frame)
