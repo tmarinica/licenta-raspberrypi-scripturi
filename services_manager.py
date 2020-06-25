@@ -40,6 +40,7 @@ class ServicesManager:
     currentFrame = None
 
     startLiveStream = False
+    liveStreamQuality = 40
 
     def startServices(self):
         print("[INFO] warming up...")
@@ -82,7 +83,8 @@ class ServicesManager:
             if self.currentFrame is None:
                 continue
 
-            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 80]
+
+            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), self.liveStreamQuality]
 
             retval, buffer = cv2.imencode('.jpg', self.currentFrame, encode_param)
             
@@ -103,7 +105,7 @@ class ServicesManager:
             gray = cv2.equalizeHist(gray)
 
             faces_frontal = self.frontal_face_cascade.detectMultiScale(gray)
-            full_bodies = self.fullbody_cascade.detectMultiScale(gray, 1.5, 1)
+            #full_bodies = self.fullbody_cascade.detectMultiScale(gray, 1.5, 1)
 
             if (len(faces_frontal) != 0):
                 if not self.hasStabilityTimerAlreadyStarted:
@@ -149,8 +151,8 @@ class ServicesManager:
             for (x,y,w,h) in faces_frontal:
                 cv2.rectangle(frame, (x,y), (x+w,y+h), (255,0,0), 2)
 
-            for (x,y,w,h) in full_bodies:
-                cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 2)
+            #for (x,y,w,h) in full_bodies:
+                #cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,0), 2)
             
             cv2.imshow("frame", frame)
 
